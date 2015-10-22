@@ -1,0 +1,3 @@
+SELECT TABLE_NAME, ENGINE
+FROM information_schema.TABLES
+WHERE TABLE_SCHEMA = 'ClassSchedule'

@@ -1,0 +1,7 @@
+# manages all courses
+# has a dictionary that map "course name" -> couse object
+
+# if course name already exsists just create a section
+# else create course
+
+# store all method
