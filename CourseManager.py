@@ -6,14 +6,13 @@ def StageCourse(course):
     if course.CourseInfo['course_id'] in course_dict:
       course_dict[course.CourseInfo['course_id']].AddSections(course.Sections)
     else:
-      course_dict[course.CourseInfo['course_id']] = course
+      course_dict[course.CourseInfo['course_id']] = coursei
 
 def StoreAllCourses():
   db = MySQLdb.connect(host="localhost", # your host, usually localhost
                        user="root", # your username
                        passwd="1234", # your password
-                       db="ClassSchedule") # name of the data base
-
+                       db="ClassSchedule") # name of the data basei
   # you must create a Cursor object. It will let
   #  you execute all the queries you need
   try:

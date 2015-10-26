@@ -15,6 +15,6 @@ def Controller():
 
   CourseManager.StoreAllCourses()
 
-def RecievePost():
+# hello
 
 Controller()

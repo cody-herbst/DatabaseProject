@@ -1,25 +1,75 @@
-import sys, os, bottle
+import sys, os, GetData, bottle, MySQLdb
+from bottle import route, request
 
-sys.path = ['/var/www/DatabaseProject/'] + sys.path 
-
-# Change working directory so relative paths (and template lookup) work again
 os.chdir(os.path.dirname(__file__))
+print os.path.dirname(MySQLdb.__file__)
+
+sys.path = ['/var/www/DatabaseProject/'] + sys.path
 
 
 # ... build or import your bottle application here ...
-from bottle import route, template, static_file
+from bottle import route, template, static_file, re
 
 @route('/')
 def home():
     return static_file('index.html', root='/var/www/DatabaseProject/public_html/')
 
-@route('/hello')
-def hello():
-    return "Hello World!"
+@route('/myjavascript')
+def javascript():
+    return static_file('index.js', root='/var/www/DatabaseProject/public_html/')
 
-@route('/fuckyou')
-def fuckyou():
-    return "Fuck YOU!"
+@route('/mycss')
+def css():
+    return static_file('index.css', root='/var/www/DatabaseProject/public_html/')
 
-# Do NOT use bottle.run() with mod_wsgi
+@route('/jquery')
+def jquery():
+    return static_file('jquery.js', root='/var/www/DatabaseProject/public_html/')
+
+@route('/query', method='POST')
+def query():
+    return GetData.executeQuery()
+
+    year = request.forms.get('Year')
+    term = request.forms.get('Term')
+    course_title = request.forms.get('CourseTitle')
+    hours_from = request.forms.get('From')
+    hours_to = request.forms.get('To')
+    course_num = request.forms.get('CourseNumber')
+    instructor = request.form.get('Instructor')
+    days_list = request.form.getlist('Days')
+
+    GetData.criteria['associate_term'] = buildAssociateTerm(year, term)
+    GetData.criteria['name_list'] = instructorSegments(instructor)
+    GetData.criteria['course_name'] = course_title
+    GetData.criteria['days'] = buildDaysString(days_list)
+    GetData.criteria['from'] = hours_from
+    GetData.criteria['to'] = hours_to
+    GetData.criteria['course_id'] = course_num
+
+    return '<tr class=\"returnRow\"><td>test1</td><td>test2</td></tr>'
+
+def buildAssociateTerm(year, term):
+    if(term == None or year == None):
+      return None
+    else:
+      return year + " " + term
+
+def instructorSegments(instructor):
+    no_primary =  re.sub("(.*?)","",instructor)
+    split_list =  no_primary.split(" ")
+    for i in split_list:
+      if i == " ":
+        split_list.remove(i)
+
+    return split_list
+
+def buildDaysString(days):
+  retString = ""
+  for day in days:
+      if(day == "Thurdsay"):
+          retString = retString + "R"
+      else:
+          retString = retString + day
+
 application = bottle.default_app()
