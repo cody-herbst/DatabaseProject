@@ -1,14 +1,9 @@
 import sys, os, GetData, bottle, MySQLdb
-from bottle import route, request
+from bottle import route, request, template, static_file
 
 os.chdir(os.path.dirname(__file__))
-print os.path.dirname(MySQLdb.__file__)
 
 sys.path = ['/var/www/DatabaseProject/'] + sys.path
-
-
-# ... build or import your bottle application here ...
-from bottle import route, template, static_file, re
 
 @route('/')
 def home():
@@ -28,7 +23,6 @@ def jquery():
 
 @route('/query', method='POST')
 def query():
-    return GetData.executeQuery()
 
     year = request.forms.get('Year')
     term = request.forms.get('Term')
@@ -47,7 +41,7 @@ def query():
     GetData.criteria['to'] = hours_to
     GetData.criteria['course_id'] = course_num
 
-    return '<tr class=\"returnRow\"><td>test1</td><td>test2</td></tr>'
+    return GetData.executeQuery()
 
 def buildAssociateTerm(year, term):
     if(term == None or year == None):
