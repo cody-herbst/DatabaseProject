@@ -2,12 +2,13 @@
 
 class Section:
 
-  def __init__(self, course_id, section_name, associate_term, credit_hours, seats_available, campus):
+  def __init__(self, course_id, section_name, semester, year, credit_hours, seats_available, campus):
       self.SectionInfo = {}
       self.MeetTimes = []
       self.SectionInfo['course_id'] = course_id
       self.SectionInfo['section_name'] = section_name
-      self.SectionInfo['associate_term'] = associate_term
+      self.SectionInfo['semester'] = semester
+      self.SectionInfo['year'] = year
       self.SectionInfo['credit_hours'] = credit_hours
       self.SectionInfo['seats_available'] = seats_available
       self.SectionInfo['campus'] = campus

@@ -10,7 +10,6 @@ class Course:
     self.CourseInfo['registration_level'] = registration_level
 
   def Store(self, cursor):
-    # store Course info
     placeholders = ', '.join(['%s'] * len(self.CourseInfo))
     columns = ', '.join(self.CourseInfo.keys())
     qry = "INSERT INTO %s ( %s ) VALUES ( %s )" % ('Courses', columns, placeholders)

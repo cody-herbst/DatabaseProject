@@ -1,7 +1,9 @@
-from bs4 import BeautifulSoup
 from Course import Course
+from bs4 import BeautifulSoup
 from Section import Section
 from MeetTimes import MeetTime
+from Locations import *
+from Instructors import *
 import CourseManager
 
 def Parse(html):
@@ -40,6 +42,10 @@ def CreateSection(course_id, dataRow, headerRow):
 
   # get associated term, credits, seats available and campus_val
   term_val = str(dataRow.td.find(text='Associated Term: ').parent.next.next).rstrip('\n')
+  term_array = term_val.split()
+  year_val = term_array[0]
+  semester_val = term_array[1]
+
   credit_val = str(dataRow.td.find(text='Credit Hours: ').parent.next.next).rstrip('\n').lstrip()
   seats_ava_val = str(dataRow.td.find(text='Seats Available: ').parent.parent.next.next.next).rstrip('\n')
   campus_val = ""
@@ -53,7 +59,7 @@ def CreateSection(course_id, dataRow, headerRow):
     campus_val = 'Japan Campus'
 
   # create section
-  section = Section(course_id, sec_name, term_val, credit_val, seats_ava_val, campus_val)
+  section = Section(course_id, sec_name, semester_val, year_val, credit_val, seats_ava_val, campus_val)
 
 
   for meetRow in dataRow.tbody.find_all('tr', recursive=False):
@@ -67,13 +73,11 @@ def CreateMeetTime(dataRows):
   type_val = str(alltabledata[0].text)
   time_val = str(alltabledata[1].text)
   days_val = alltabledata[2].text
-  location_val = str(alltabledata[3].text)
+  location_id = AddLocation(str(alltabledata[3].text))
   schedule_type_val = str(alltabledata[6].text)
-  instructor_val = str(alltabledata[7].text)
+  instructor_id = AddInstructor(str(alltabledata[7].text))
 
-  return MeetTime(type_val, time_val, days_val, location_val, schedule_type_val, instructor_val)
-
-
+  return MeetTime(type_val, time_val, days_val, location_id, schedule_type_val, instructor_id)
 
 
 

@@ -1,4 +1,4 @@
-function requestReturn() {   
+function requestReturn() {
 
     $.ajax({
         url: 'http://codydatabaseproject.com/query',

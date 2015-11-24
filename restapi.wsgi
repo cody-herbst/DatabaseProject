@@ -23,14 +23,13 @@ def jquery():
 
 @route('/query', method='POST')
 def query():
-
     year = request.forms.get('Year')
     term = request.forms.get('Term')
     course_title = request.forms.get('CourseTitle')
     hours_from = request.forms.get('From')
     hours_to = request.forms.get('To')
     course_num = request.forms.get('CourseNumber')
-    instructor = request.form.get('Instructor')
+    instructor = request.forms.get('Instructor')
     days_list = request.form.getlist('Days')
 
     GetData.criteria['associate_term'] = buildAssociateTerm(year, term)
