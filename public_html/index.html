@@ -3,57 +3,79 @@
   <head>
     <meta charset="utf-8">
     <title>Class Schedule Query</title>
-    <script type="text/javascript" src="http://codydatabaseproject.com/myjavascript"></script>
-    <script type="text/javascript" src="http://codydatabaseproject.com/jquery"></script>
   </head>
   <body>
-    <form method="post" id="formID" onSubmit="return requestReturn();">
-	Year:<br>
-  	<select type="text" name="Year" value="">
-	   <option value="2015">2015</option>
-  	   <option value="2014">2014</option>
-  	   <option value="2013">2013</option>
-	</select>
-  	<br><br>
-  	Term:<br>
-  	<select type="text" name="Term" value="">
-	   <option value="Fall">Fall</option>
-  	   <option value="Summer">Summer</option>
-  	   <option value="Winter">Winter</option>
- 	   <option value="Spring">Spring</option>
-	</select>
-  	<br><br>
-	Course Title:<br>
-        <input type="text" name="CourseTitle" value="">
-        <br><br>
-	Credit Hours:<br>
-	From: <input type="text" name="From" value="">
-        To: <input type="text" name="To" value="">
-        <br><br>
-	Instructor:<br>
-        <input type="text" name="Instructor" value="">
-        <br><br>
-	Course Number:<br>
-        <input type="text" name="CourseNumber" value="">
-        <br><br>
-	Days:<br>
-        Monday:<input type="checkbox" name="Days" value="Monday">
-	Tuesay:<input type="checkbox" name="Days" value="Tuesay">
-	Wednesday:<input type="checkbox" name="Days" value="Wednesday">
-	Thursday:<input type="checkbox" name="Days" value="Thursday">
-	Friday:<input type="checkbox" name="Days" value="Friday">
-        <br><br>
-        <input type="submit" name="theForm" value="submit">
-    </form> 
-    <table  BORDER="5" id="returnTable">
-	   <tr>
-              <th style="width:150px">Associate Term</th>
-              <th style="width:150px">Course Title  </th>
-	      <th style="width:150px">Credit Hours  </th>
-	      <th style="width:150px">Instructor    </th>
-	      <th style="width:150px">Course Number </th>
-	      <th style="width:150px">Days          </th>
- 	   </tr>
-    </table>
+    <ul class="tabs">
+      <li><a href="#tab1" onClick="tabOneClick()">Pestaña 1</a></li>
+      <li><a href="#tab2" onClick="tabTwoClick()">Pestaña 2</a></li>
+    </ul>
+    <div class="tabWrapper" id="tab1">
+	    <form method="post" id="formID" onSubmit="return requestReturn();">
+		Year:<br>
+	  	<select type="text" name="Year" value="">
+		   <option value="2015">2015</option>
+	  	   <option value="2014">2014</option>
+	  	   <option value="2013">2013</option>
+		</select>
+	  	<br><br>
+	  	Term:<br>
+	  	<select type="text" name="Term" value="">
+		   <option value="Fall">Fall</option>
+	  	   <option value="Summer">Summer</option>
+	  	   <option value="Winter">Winter</option>
+	 	   <option value="Spring">Spring</option>
+		</select>
+	  	<br><br>
+		Course Title:<br>
+		<input type="text" name="CourseTitle" value="">
+		<br><br>
+		Credit Hours:<br>
+		From: <input type="text" name="From" value="">
+		To: <input type="text" name="To" value="">
+		<br><br>
+		Instructor:<br>
+		<input type="text" name="Instructor" value="">
+		<br><br>
+		Course Number:<br>
+		<input type="text" name="CourseNumber" value="">
+		<br><br>
+		Days:<br>
+		Monday:<input type="checkbox" name="Days" value="Monday">
+		Tuesay:<input type="checkbox" name="Days" value="Tuesay">
+		Wednesday:<input type="checkbox" name="Days" value="Wednesday">
+		Thursday:<input type="checkbox" name="Days" value="Thursday">
+		Friday:<input type="checkbox" name="Days" value="Friday">
+		<br><br>
+		<input type="submit" name="theForm" value="submit">
+	    </form> 
+	    <table  BORDER="5" id="returnTable">
+		   <tr>
+		      <th style="width:150px">Associate Term</th>
+		      <th style="width:150px">Course Title  </th>
+		      <th style="width:150px">Credit Hours  </th>
+		      <th style="width:150px">Instructor    </th>
+		      <th style="width:150px">Course Number </th>
+		      <th style="width:150px">Section Number</th>
+		      <th style="width:150px">Days          </th>
+	 	   </tr>
+	    </table>
+	</div>
+	<div class="tabWrapper" id="tab2">
+	   <div id="chart_div"></div>
+	</div>
   </body>
+  <foot>
+    <script type="text/javascript" src="http://codydatabaseproject.com/myjavascript"></script>
+    <script type="text/javascript" src="http://codydatabaseproject.com/jquery"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script>
+	$('#tab2').hide();
+	// Load the Visualization API and the piechart package.
+	google.load('visualization', '1.0', {'packages':['corechart']});
+
+	// Set a callback to run when the Google Visualization API is loaded.
+	google.setOnLoadCallback(drawChart);
+    </script>
+    <link rel="stylesheet" type="text/css" href="http://codydatabaseproject.com/mycss">
+  </foot>
 </html>

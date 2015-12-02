@@ -30,10 +30,11 @@ def query():
     hours_to = request.forms.get('To')
     course_num = request.forms.get('CourseNumber')
     instructor = request.forms.get('Instructor')
-    days_list = request.form.getlist('Days')
+    days_list = request.forms.getlist('Days')
 
-    GetData.criteria['associate_term'] = buildAssociateTerm(year, term)
-    GetData.criteria['name_list'] = instructorSegments(instructor)
+    GetData.criteria['year'] = year
+    GetData.criteria['semester'] = term
+    GetData.criteria['instructor'] = instructor
     GetData.criteria['course_name'] = course_title
     GetData.criteria['days'] = buildDaysString(days_list)
     GetData.criteria['from'] = hours_from
@@ -42,27 +43,17 @@ def query():
 
     return GetData.executeQuery()
 
-def buildAssociateTerm(year, term):
-    if(term == None or year == None):
-      return None
-    else:
-      return year + " " + term
-
-def instructorSegments(instructor):
-    no_primary =  re.sub("(.*?)","",instructor)
-    split_list =  no_primary.split(" ")
-    for i in split_list:
-      if i == " ":
-        split_list.remove(i)
-
-    return split_list
+    #return "<tr><td>" + GetData.criteria['days'] + "</tr></td>"
 
 def buildDaysString(days):
   retString = ""
   for day in days:
-      if(day == "Thurdsay"):
+      if(day == "Thursday"):
           retString = retString + "R"
       else:
-          retString = retString + day
+          retString = retString + day[0]
 
+  return retString
+
+bottle.debug(True)
 application = bottle.default_app()

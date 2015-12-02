@@ -75,7 +75,11 @@ def CreateMeetTime(dataRows):
   days_val = alltabledata[2].text
   location_id = AddLocation(str(alltabledata[3].text))
   schedule_type_val = str(alltabledata[6].text)
-  instructor_id = AddInstructor(str(alltabledata[7].text))
+
+  instructor_name_list = str(alltabledata[7].text).split()
+  instructor_name = ' '.join(instructor_name_list)
+
+  instructor_id = AddInstructor(instructor_name)
 
   return MeetTime(type_val, time_val, days_val, location_id, schedule_type_val, instructor_id)
 

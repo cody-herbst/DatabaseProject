@@ -4,25 +4,22 @@ criteria = {}
 
 def buildWhereClause():
   conditionList = []
-  for key, item in criteria:
-    if item == None:
-        criteria.pop(key)
-    else:
-        if key == 'name_list':
-            for name in item:
-                conditionList.append('instructor like "%' + name + '%"')
+  for key, item in criteria.iteritems():
+    if item != None and item != "":
+        if key == 'instructor':
+            conditionList.append('instructor Like %(instructor)s')
         elif key == 'from':
-            conditionList.adend('credit_hours >= ' + item)
+            conditionList.append('credit_hours >= %(from)s')
         elif key == 'to':
-            conditionList.adend('credit_hours <= ' + item)
+            conditionList.append('credit_hours <= %(to)s')
         else:
-            condition = key + ' = ' + item
-            conditonList.append(condition)
+            condition = key + ' = ' + '%(' + key + ')s'
+            conditionList.append(condition)
 
   if not conditionList:
-      return ";"
+      return ""
   else:
-    return ' Where ' +  ' and '.join(conditionList) + ';'
+    return ' Where ' +  ' and '.join(conditionList)
 
 def executeQuery():
     db = MySQLdb.connect(host="localhost", # your host, usually localhost
@@ -31,10 +28,10 @@ def executeQuery():
                          db="ClassSchedule") # name of the data base
     try:
         cursor = db.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT associate_term, course_name, credit_hours, instructor, course_id, days " +
-                        "FROM (Courses Natural Join Sections) Natural Join MeetTimes" + buildWhereClause())
+        #return "<tr><td>where clause {}</tr>".format(criteria)
+        cursor.execute("SELECT year, semester, section_name, course_name, credit_hours, instructor, course_id, days " +
+                        "FROM ((Courses Natural Join Sections) Natural Join MeetTimes ) Natural Join Instructors" +  buildWhereClause() + " Order By section_id;", criteria)
         rows = cursor.fetchall()
-
         retval = ''
         for row in rows:
            retval = retval + buildHtml(row)
@@ -44,17 +41,18 @@ def executeQuery():
         print buildWhereClause()
         cursor.close()
         db.close
-        return "<tr><td>error {0}</tr></td>".format(e.args[1])
+        return "<tr><td>error {}</td><td>where clause {}</tr>".format(e.args[1], buildWhereClause())
     finally:
         cursor.close()
         db.close()
 
 def buildHtml(row):
    return '<tr class="returnRow">' \
-   '<td>' + row['associate_term'] + '</td>' \
+   '<td>' + row['year'] + " " + row['semester'] + '</td>' \
    '<td>' + row['course_name'] + '</td>' \
    '<td>' + row['credit_hours'] + '</td>' \
    '<td>' + row['instructor'] + '</td>' \
    '<td>' + row['course_id'] + '</td>' \
+   '<td>' + row['section_name'] + '</td>' \
    '<td>' + row['days'] + '</td>' \
-   '<tr>'
+   '</tr>'
