@@ -67,3 +67,27 @@ function drawChart() {
     	});
 }
 
+function set_Instructors_and_Courses(){
+	$.ajax({
+        url: 'http://codydatabaseproject.com/instructors',
+        type: 'get',
+        dataType: 'json',
+        success: function(returnData) {
+			$.each(returnData, function(i, item){
+            			$('#instructor').append(item);
+        		});
+		}
+	});
+
+	$.ajax({
+        url: 'http://codydatabaseproject.com/courses',
+        type: 'get',
+        dataType: 'json',
+        success: function(returnData) {
+			$.each(returnData, function(i, item){
+            			$('#course').append(item);
+        		});
+		}
+	});
+}
+

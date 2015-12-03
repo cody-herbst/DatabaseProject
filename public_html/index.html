@@ -6,13 +6,14 @@
   </head>
   <body>
     <ul class="tabs">
-      <li><a href="#tab1" onClick="tabOneClick()">Pestaña 1</a></li>
-      <li><a href="#tab2" onClick="tabTwoClick()">Pestaña 2</a></li>
+      <li><a href="#tab1" onClick="tabOneClick()">Tab 1</a></li>
+      <li><a href="#tab2" onClick="tabTwoClick()">Tab 2</a></li>
     </ul>
     <div class="tabWrapper" id="tab1">
 	    <form method="post" id="formID" onSubmit="return requestReturn();">
 		Year:<br>
 	  	<select type="text" name="Year" value="">
+		   <option value="">Empty</option>
 		   <option value="2015">2015</option>
 	  	   <option value="2014">2014</option>
 	  	   <option value="2013">2013</option>
@@ -20,6 +21,7 @@
 	  	<br><br>
 	  	Term:<br>
 	  	<select type="text" name="Term" value="">
+		   <option value="">Empty</option>
 		   <option value="Fall">Fall</option>
 	  	   <option value="Summer">Summer</option>
 	  	   <option value="Winter">Winter</option>
@@ -34,10 +36,14 @@
 		To: <input type="text" name="To" value="">
 		<br><br>
 		Instructor:<br>
-		<input type="text" name="Instructor" value="">
+		<select id="instructor" type="text" name="Instructor" value="">
+		   <option value="">Empty</option>
+		</select>
 		<br><br>
 		Course Number:<br>
-		<input type="text" name="CourseNumber" value="">
+		<select id="course" type="text" name="CourseNumber" value="">
+		   <option value="">Empty</option>
+		</select>
 		<br><br>
 		Days:<br>
 		Monday:<input type="checkbox" name="Days" value="Monday">
@@ -74,7 +80,9 @@
 
 	// Load the Visualization API and the piechart package.
 	google.load('visualization', '1.0', {'packages':['corechart']});
-    </script>
+
+  	set_Instructors_and_Courses();
+  </script>
     <link rel="stylesheet" type="text/css" href="http://codydatabaseproject.com/mycss">
   </foot>
 </html>

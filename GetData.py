@@ -8,9 +8,11 @@ def buildWhereClause():
   for key, item in criteria.iteritems():
     if item != None and item != "":
         if key == 'instructor':
-            conditionList.append('instructor Like %(instructor)s')
+            conditionList.append('instructor Like \'%s\'' % ('%%'+ item + '%%'))
         elif key == 'from':
             conditionList.append('credit_hours >= %(from)s')
+        elif key == 'course_id':
+            conditionList.append('course_id Like \'%s\'' % ('%%' + item + '%%'))
         elif key == 'to':
             conditionList.append('credit_hours <= %(to)s')
         else:
@@ -79,6 +81,52 @@ def executeAggregation():
         cursor.close()
         db.close
         return "<tr><td>error {}</td><td>where clause {}</tr>".format(e.args[1], buildWhereClause())
+    finally:
+        cursor.close()
+        db.close()
+
+def getInstructors():
+    db = MySQLdb.connect(host="localhost", # your host, usually localhost
+                         user="root", # your username
+                         passwd="1234", # your password
+                         db="ClassSchedule") # name of the data base
+    try:
+        cursor = db.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("select * from Instructors;")
+        rows = cursor.fetchall()
+
+        retval = []
+        for row in rows:
+            retval.append("<option value=\"%(instructor)s\">%(instructor)s</option>" % {'instructor' : row['instructor']})
+
+        return json.dumps(retval)
+
+    except MySQLdb.Error as e:
+        cursor.close()
+        db.close
+    finally:
+        cursor.close()
+        db.close()
+
+def getCourses():
+    db = MySQLdb.connect(host="localhost", # your host, usually localhost
+                         user="root", # your username
+                         passwd="1234", # your password
+                         db="ClassSchedule") # name of the data base
+    try:
+        cursor = db.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("select * from Courses;")
+        rows = cursor.fetchall()
+
+        retval = []
+        for row in rows:
+            retval.append("<option value=\"%(course)s\">%(course)s</option>" % {'course' : row['course_id']})
+
+        return json.dumps(retval)
+
+    except MySQLdb.Error as e:
+        cursor.close()
+        db.close
     finally:
         cursor.close()
         db.close()

@@ -49,6 +49,14 @@ def query():
 def aggregation():
     return GetData.executeAggregation()
 
+@route('/instructors')
+def instructors():
+    return GetData.getInstructors()
+
+@route('/courses')
+def courses():
+    return GetData.getCourses()
+
 def buildDaysString(days):
   retString = ""
   for day in days:
