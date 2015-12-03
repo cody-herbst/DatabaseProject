@@ -1,4 +1,5 @@
 import MySQLdb
+import json
 
 criteria = {}
 
@@ -56,3 +57,29 @@ def buildHtml(row):
    '<td>' + row['section_name'] + '</td>' \
    '<td>' + row['days'] + '</td>' \
    '</tr>'
+
+
+def executeAggregation():
+    db = MySQLdb.connect(host="localhost", # your host, usually localhost
+                         user="root", # your username
+                         passwd="1234", # your password
+                         db="ClassSchedule") # name of the data base
+    try:
+        cursor = db.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("select building, room_number, count(*) as count\
+                from MeetTimes join Locations using(location_id)\
+                where room_number != 'TBA'\
+                group by  location_id\
+                order by count desc\
+                limit 10;")
+        rows = cursor.fetchall()
+
+        return json.dumps(rows)
+    except MySQLdb.Error as e:
+        cursor.close()
+        db.close
+        return "<tr><td>error {}</td><td>where clause {}</tr>".format(e.args[1], buildWhereClause())
+    finally:
+        cursor.close()
+        db.close()
+

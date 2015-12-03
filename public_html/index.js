@@ -32,8 +32,7 @@ function aggregationDataChart(){
 	// Load the Visualization API and the piechart package.
 	google.load('visualization', '1.0', {'packages':['corechart']});
 
-	// Set a callback to run when the Google Visualization API is loaded.
-	google.setOnLoadCallback(drawChart);
+	drawChart();
 }
 
 
@@ -41,26 +40,30 @@ function aggregationDataChart(){
 // instantiates the pie chart, passes in the data and
 // draws it.
 function drawChart() {
+	$.ajax({
+        url: 'http://codydatabaseproject.com/aggregation',
+        type: 'get',
+        dataType: 'json',
+        success: function(returnData) {
+		     // Create the data table.
+		     var data = new google.visualization.DataTable();
+		     data.addColumn('string', 'Location');
+		     data.addColumn('number', 'TimesUsed');
 
-	// Create the data table.
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'Topping');
-	data.addColumn('number', 'Slices');
-	data.addRows([
-	  ['Mushrooms', 3],
-	  ['Onions', 1],
-	  ['Olives', 1],
-	  ['Zucchini', 1],
-	  ['Pepperoni', 2]
-	]);
+		     for (i in returnData)
+		     {
+  			data.addRow([returnData[i].building + " " + returnData[i].room_number, parseInt(returnData[i].count)]) 
+		     }
 
-	// Set chart options
-	var options = {'title':'How Much Pizza I Ate Last Night',
-		       'width':400,
-		       'height':300};
+                     // Set chart options
+	             var options = {'title':'Most utilized rooms is CIS',
+		         'width':800,
+		         'height':800};
 
-	// Instantiate and draw our chart, passing in some options.
-	var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-	chart.draw(data, options);
+		     // Instantiate and draw our chart, passing in some options.
+	             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+	             chart.draw(data, options);
+                 }
+    	});
 }
 

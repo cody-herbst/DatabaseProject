@@ -45,6 +45,10 @@ def query():
 
     #return "<tr><td>" + GetData.criteria['days'] + "</tr></td>"
 
+@route('/aggregation')
+def aggregation():
+    return GetData.executeAggregation()
+
 def buildDaysString(days):
   retString = ""
   for day in days:
